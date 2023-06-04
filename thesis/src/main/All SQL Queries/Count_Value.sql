@@ -1,0 +1,1 @@
+SELECT value, COUNT(value) FROM mastersthesis.misp group by value;
