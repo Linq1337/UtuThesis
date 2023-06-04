@@ -25,7 +25,7 @@ public class Util {
     
         // Store your Password seperately and encrypted if possible.
         String user = "root";
-        String password = "321acdc321";
+        String password = "";
 
         try {
             Class.forName(driver);
