@@ -23,8 +23,8 @@ public class contact_frequency {
     try (Connection conn = Util.getConnection();
     
     // Change to PREPARED STATEMENT because of security reasons //
-    Statement stmt  = conn.createStatement();
-    ResultSet rs    = stmt.executeQuery(sql)) {
+      Statement stmt  = conn.createStatement();
+      ResultSet rs    = stmt.executeQuery(sql)) {
     
     // loop RS
     while (rs.next()) {
@@ -51,7 +51,7 @@ public class contact_frequency {
   }     
     // 
     } catch (SQLException ex) {
-    System.out.println(ex.getMessage());
+        System.out.println(ex.getMessage());
     }
     
     }
