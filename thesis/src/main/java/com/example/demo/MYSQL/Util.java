@@ -23,7 +23,7 @@ public class Util {
         String driver = "com.mysql.cj.jdbc.Driver";
         String url = "jdbc:mysql://localhost:3306/mastersthesis?allowPublicKeyRetrieval=TRUE&autoReconnect=true";
     
-        // Store your Password seperately and encrypted if possible.
+        // Store your Password seperately and encrypted for real usage scenarios
         String user = "root";
         String password = "";
 
