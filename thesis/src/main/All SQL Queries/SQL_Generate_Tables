@@ -1,0 +1,49 @@
+'fair_data', 'CREATE TABLE `fair_data` 
+(\n  `threat_level_id` int DEFAULT NULL,\n  `value` varchar(45) DEFAULT NULL,\n  `category` varchar(45) DEFAULT NULL,\n  
+`type` varchar(45) DEFAULT NULL,\n  `category_type_counter` int DEFAULT NULL,\n  
+`Percentage` double DEFAULT NULL\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci'
+
+
+'misp', 'CREATE TABLE `misp` (\n  `event_id` int DEFAULT NULL,\n  `type` varchar(45) DEFAULT NULL,\n  
+`category` varchar(45) DEFAULT NULL,\n  `org_id` varchar(45) DEFAULT NULL,\n  `date` varchar(45) DEFAULT NULL,\n  
+`threat_level_id` int DEFAULT NULL,\n  `info` varchar(45) DEFAULT NULL,\n  `id` varchar(45) DEFAULT NULL,\n  
+`uuid` varchar(45) DEFAULT NULL,\n  `value` varchar(45) DEFAULT NULL,\n  `timestamp` varchar(45) DEFAULT NULL,\n  
+`category_type` varchar(45) DEFAULT NULL,\n  `value_cnt` int DEFAULT NULL,\n  `tef_percentage` varchar(45) DEFAULT NULL,\n  
+`total_valuedata` varchar(45) DEFAULT NULL\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci'
+
+
+'category_type_frequency2', 'CREATE TABLE `category_type_frequency2` (\n  `id` int NOT NULL AUTO_INCREMENT,\n  
+`Category_Type_Counter` int DEFAULT NULL,\n  `Category` varchar(50) DEFAULT NULL,\n  `Type` varchar(100) DEFAULT NULL,\n  
+`totalid` bigint NOT NULL,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB AUTO_INCREMENT=383 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci'
+
+
+'preprocess1_fairdata', 'CREATE TABLE `preprocess1_fairdata` (\n  `value` varchar(45) DEFAULT NULL,\n  `threat_level` int DEFAULT NULL\n) 
+ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci'
+
+
+'preprocess2_fairdata', 'CREATE TABLE `preprocess2_fairdata` 
+(\n  `value` varchar(45) DEFAULT NULL,\n  `category` varchar(45) DEFAULT NULL,\n  `type` varchar(45) DEFAULT NULL,\n  
+`Category_Type_Counter` int DEFAULT NULL\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci'
+
+'preprocess3_fairdata', 'CREATE TABLE `preprocess3_fairdata` (\n  `value` varchar(45) DEFAULT NULL,\n  
+`value_cnt` varchar(45) DEFAULT NULL\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci'
+
+
+'total_category_type', 'CREATE TABLE `total_category_type` (\n  `Total_Category_Type` int NOT NULL,\n  
+`TotalID` int DEFAULT NULL,\n  `id` bigint NOT NULL,\n  PRIMARY KEY (`Total_Category_Type`),\n  UNIQUE KEY `indexcount` 
+(`Total_Category_Type`),\n  UNIQUE KEY `TotalID_UNIQUE` (`TotalID`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci'
+
+
+'value_tef', 'CREATE TABLE `value_tef` (\n  `category` varchar(45) DEFAULT NULL,\n  `type` varchar(45) DEFAULT NULL,\n  
+`cnt` int DEFAULT NULL,\n  `value` varchar(45) DEFAULT NULL,\n  `risk_factor` varchar(45) DEFAULT NULL\n) 
+ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci'
+
+
+'value_risk_definition', 'CREATE TABLE `value_risk_definition` (\n  `verylow_risk` varchar(45) DEFAULT NULL,\n  
+`low_risk` varchar(45) DEFAULT NULL,\n  `medium_risk` varchar(45) DEFAULT NULL,\n  `high_risk` varchar(45) DEFAULT NULL\n) 
+ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci'
+
+
+'category_percentage', 'CREATE TABLE `category_percentage` 
+(\n  `id` int NOT NULL AUTO_INCREMENT,\n  `Category` varchar(50) DEFAULT NULL,\n  `Type` varchar(50) DEFAULT NULL,\n  
+`Percentage` decimal(5,3) DEFAULT NULL,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB AUTO_INCREMENT=219 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci'
