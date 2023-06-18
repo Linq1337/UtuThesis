@@ -27,24 +27,23 @@ ResultSet rs    = stmt.executeQuery(sql)) {
 
 // loop RS
 while (rs.next()) {
-
-String Type = rs.getString("type");		  
-String Category = rs.getString("category");
-double Category_Type_Counter = rs.getDouble("Category_Type_Counter");
-double Total_Value_Fixed = rs.getDouble("value_cnt");
+    String Type = rs.getString("type");		  
+    String Category = rs.getString("category");
+    double Category_Type_Counter = rs.getDouble("Category_Type_Counter");
+    double Total_Value_Fixed = rs.getDouble("value_cnt");
 //double Total_Value_Fixed = 485853;
 
 
 // Use the getters values in TEF_Value_Data class for these or modify manually to define low, med, high //
 // OR Allow users to modify the values // 
-double low = 70.8 / Total_Value_Fixed;
-double medium = 177 / Total_Value_Fixed;
-double high = 354 / Total_Value_Fixed;
-double veryhigh = 708 / Total_Value_Fixed;
+    double low = 70.8 / Total_Value_Fixed;
+    double medium = 177 / Total_Value_Fixed;
+    double high = 354 / Total_Value_Fixed;
+    double veryhigh = 708 / Total_Value_Fixed;
 
 // Calculating Percentage //
-double TEF_Percentage_Pre =  Category_Type_Counter / Total_Value_Fixed  ;
-double TEF_Percentage = TEF_Percentage_Pre * 100;
+    double TEF_Percentage_Pre =  Category_Type_Counter / Total_Value_Fixed  ;
+    double TEF_Percentage = TEF_Percentage_Pre * 100;
 
 
 // Counting Category & Type and determining the frequency of threat. Include the list add to isolate in the context of the conditions //
