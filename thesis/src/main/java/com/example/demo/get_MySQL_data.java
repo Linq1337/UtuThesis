@@ -16,8 +16,8 @@ public class get_MySQL_data {
    
     public void RunThis () { 
     // Change Limit for real world case, but remember to deal with new creation of a large volume of files, DB has around half a millions rows.
-    String sql = " SELECT category, type, threat_level_id, category_type_counter, Percentage  " +
-    "FROM fair_data group by category, type, threat_level_id, category_type_counter, Percentage LIMIT 1";
+    String sql = " SELECT id, category, type, threat_level_id, category_type_counter, Percentage  " +
+    "FROM fair_data group by id, category, type, threat_level_id, category_type_counter, Percentage LIMIT 1";
 
     // Use this for added security if needed //
     //    String sql = " SELECT category, type, threat_level_id, category_type_counter, Percentage  " +
@@ -127,7 +127,6 @@ if(Category_Type_Percentage < 0 & Category_Type_Percentage < 0.5 ) {
     if (row.contains("potential (Contact_Frequency){ data = ( 1.0 0.0 0.0 );"))
         row = row.replace("( 1.0 0.0 0.0 )", "( 0.0 0.0 0.1 )");  
 }
-
 
     Writer.write(row+"\n");
 
