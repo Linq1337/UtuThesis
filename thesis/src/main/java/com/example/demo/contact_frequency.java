@@ -13,18 +13,18 @@ public class contact_frequency {
 
 
   // Encapsulates List and Content, Use getters to retrieve //
-    private ArrayList< String> TEF_Value_list = new ArrayList<String>();
+   public ArrayList< String> TEF_Value_list = new ArrayList<String>();
 
     public void GetTEFValueData () {
 
-        String sql = " SELECT distinct value, COUNT(value) AS CNT " +
-        "FROM misp GROUP BY value, value";
+        String sql = " SELECT id, value, COUNT(value) AS CNT " +
+        "FROM fair_data GROUP BY id, value, value";
     
     try (Connection conn = Util.getConnection();
     
     // Change to PREPARED STATEMENT because of security reasons //
-      Statement stmt  = conn.createStatement();
-      ResultSet rs    = stmt.executeQuery(sql)) {
+    Statement stmt  = conn.createStatement();
+    ResultSet rs    = stmt.executeQuery(sql)) {
     
     // loop RS
     while (rs.next()) {
@@ -51,7 +51,7 @@ public class contact_frequency {
   }     
     // 
     } catch (SQLException ex) {
-        System.out.println(ex.getMessage());
+    System.out.println(ex.getMessage());
     }
     
     }
