@@ -11,158 +11,131 @@ node Contact_Frequency
 {
      label = "C1";
      position = (192 338);
-     states = ("High" "Medium" "Low" "State 3");
+     states = ("High" "Medium" "Low");
 }
 
 node Probability_of_action
 {
      label = "C2";
      position = (335 338);
-     states = ("High" "Medium" "Low" "State 3");
+     states = ("High" "Medium" "Low");
 }
 
 node Resistance_Capability
 {
      label = "C3";
      position = (786 303);
-     states = ("High" "Medium" "Low" "State 3");
+     states = ("High" "Medium" "Low");
 }
 
 node Threat_Capability
 {
      label = "C4";
      position = (916 304);
-     states = ("High" "Medium" "Low" "State 3");
+     states = ("High" "Medium" "Low");
 }
 
 node Threat_Event_frequency
 {
      label = "C5";
      position = (256 267);
-     states = ("High" "Medium" "Low" "State 3");
+     states = ("High" "Medium" "Low");
 }
 
 node Los_event_frequency
 {
      label = "C6";
      position = (272 117);
-     states = ("State 0" "State 1" "State 2" "State 3");
+     states = ("High" "Medium" "State 2");
 }
 
 node Vulnerability
 {
      label = "C7";
-     position = (845 192);
-     states = ("High" "Medium" "Low" "State 3");
+     position = (846 172);
+     states = ("High" "Medium" "Low");
 }
 
 node Impact
 {
      label = "C8";
-     position = (847 91);
-     states = ("High" "Medium" "Low" "State 3");
+     position = (847 97);
+     states = ("High" "Medium" "Low");
 }
 
 node Threat_Score
 {
      label = "C9";
-     position = (562 24);
-     states = ("High" "Medium" "Low" "State 3");
+     position = (563 0);
+     states = ("High" "Medium" "Low");
 }
 
-potential (Contact_Frequency)
-{
- data = ( 1.0 0.0 0.0 0.0 );
+potential (Contact_Frequency){ data = ( 1.0 0.0 0.0 );
 }
 
-potential (Probability_of_action)
-{
- data = ( 0.0 1.0 0.0 0.0 );
+potential (Probability_of_action){ data = ( 1.0 0.0 0.0 );
 }
 
-potential (Resistance_Capability)
-{
- data = ( 1.0 0.0 0.0 0.0 );
+potential (Resistance_Capability){ data = ( 1.0 0.0 0.0 );
 }
 
-potential (Threat_Capability)
-{
- data = ( 1.0 0.0 0.0 0.0 );
+potential (Threat_Capability){ data = ( 1.0 0.0 0.0 );
 }
 
 potential (Threat_Event_frequency | Contact_Frequency Probability_of_action)
 {
- data = ((( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 ))
-(( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 ))
-(( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 ))
-(( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 )));
+ data = ((( 1.0 0.0 0.0 )
+( 1.0 0.0 0.0 )
+( 1.0 0.0 0.0 ))
+(( 1.0 0.0 0.0 )
+( 1.0 0.0 0.0 )
+( 1.0 0.0 0.0 ))
+(( 1.0 0.0 0.0 )
+( 1.0 0.0 0.0 )
+( 1.0 0.0 0.0 )));
 }
 
 potential (Los_event_frequency | Threat_Event_frequency)
 {
- data = (( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 ));
+ data = (( 0.0 0.0 0.0 )
+( 0.0 0.0 0.0 )
+( 0.0 0.0 0.0 ));
 }
 
 potential (Vulnerability | Threat_Capability Resistance_Capability)
 {
- data = ((( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 ))
-(( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 ))
-(( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 ))
-(( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 )));
+ data = ((( 1.0 0.0 0.0 )
+( 1.0 0.0 0.0 )
+( 1.0 0.0 0.0 ))
+(( 1.0 0.0 0.0 )
+( 1.0 0.0 0.0 )
+( 1.0 0.0 0.0 ))
+(( 1.0 0.0 0.0 )
+( 1.0 0.0 0.0 )
+( 1.0 0.0 0.0 )));
 }
 
 potential (Impact | Vulnerability)
 {
- data = (( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 ));
+ data = (( 1.0 0.0 0.0 )
+( 1.0 0.0 0.0 )
+( 1.0 0.0 0.0 ));
 }
 
 potential (Threat_Score | Los_event_frequency Impact)
 {
- data = ((( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 ))
-(( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 ))
-(( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 ))
-(( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 )
-( 1.0 0.0 0.0 0.0 )));
+ data = ((( 1.0 0.0 0.0 )
+( 1.0 0.0 0.0 )
+( 1.0 0.0 0.0 ))
+(( 1.0 0.0 0.0 )
+( 1.0 0.0 0.0 )
+( 1.0 0.0 0.0 ))
+(( 1.0 0.0 0.0 )
+( 1.0 0.0 0.0 )
+( 1.0 0.0 0.0 )));
 }
+
+
+
+
 
