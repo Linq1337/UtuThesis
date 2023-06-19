@@ -1,7 +1,8 @@
-'fair_data', 'CREATE TABLE `fair_data` 
-(\n  `threat_level_id` int DEFAULT NULL,\n  `value` varchar(45) DEFAULT NULL,\n  `category` varchar(45) DEFAULT NULL,\n  
-`type` varchar(45) DEFAULT NULL,\n  `category_type_counter` int DEFAULT NULL,\n  
-`Percentage` double DEFAULT NULL\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci'
+'Fair_data', 'CREATE TABLE `fair_data` (\n  `id` int NOT NULL AUTO_INCREMENT,\n  `threat_level_id` int DEFAULT NULL,
+\n  `value` varchar(45) DEFAULT NULL,\n  `category` varchar(45) DEFAULT NULL,\n  `type` varchar(45) DEFAULT NULL,
+\n  `category_type_counter` int DEFAULT NULL,\n  `Percentage` double DEFAULT NULL,\n  PRIMARY KEY (`id`)
+\n) ENGINE=InnoDB AUTO_INCREMENT=441384 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci'
+
 
 
 'misp', 'CREATE TABLE `misp` (\n  `event_id` int DEFAULT NULL,\n  `type` varchar(45) DEFAULT NULL,\n  
