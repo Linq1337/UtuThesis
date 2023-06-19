@@ -25,7 +25,7 @@ public class ThesisApplication extends Util  {
 
 	// #1 //
 	// This modifies the BBN model. When using the BBN model modification you have to comment out the Export to file part of this application and other objects.
-			//get_MySQL_data testobj = new get_MySQL_data();
+			//ModifyBBN testobj = new ModifyBBN();
 			//testobj.RunThis();
 		
 	// #2 //
