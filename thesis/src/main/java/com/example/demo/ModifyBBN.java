@@ -12,7 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 //import java.sql.PreparedStatement;
 
-public class get_MySQL_data {
+public class ModifyBBN {
    
     public void RunThis () { 
     // Change Limit for real world case, but remember to deal with new creation of a large volume of files, DB has around half a millions rows.
