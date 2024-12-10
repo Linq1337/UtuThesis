@@ -5,12 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
+import java.util.HashMap;
+import java.util.Map;
 import com.example.demo.MYSQL.Util;
 
+
 public class ImpactFactor {
- 
-    // Encapsulates List and Content, Use getters to retrieve //
+
+    // Encapsulates List and Content, Use getters to retrieve
     private ArrayList<String> impact_list = new ArrayList<String>();
 
     private String threat_level;
@@ -19,20 +21,20 @@ public class ImpactFactor {
     private String impact_factor;
 
     // Add category and type to query to determine threat_level
-    public void impact() {
+    public void impact(Map<String, Integer> thresholds) {
 
+        // Secure parameterized SQL query to prevent SQL injection
         String sql = """
-            SELECT id, value, category, type, threat_level_id
-            FROM fair_data
-            GROUP BY id, value, category, type, threat_level_id
-        """;
+    SELECT id, value, category, type, threat_level_id
+    FROM fair_data
+    WHERE category = ? AND type = ?
+    GROUP BY id, value, category, type, threat_level_id
+     """;
 
         try (Connection conn = Util.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            // If needed, you can set parameters dynamically, for example:
-            // stmt.setString(1, someValue);  // Use this if you're filtering by user input
-
+            // Execute query and retrieve the result set
             try (ResultSet rs = stmt.executeQuery()) {
 
                 // Loop through the result set
@@ -43,39 +45,15 @@ public class ImpactFactor {
                     String type = rs.getString("type");
                     int impact_factor = rs.getInt("threat_level_id");
 
-                    // Defining low, medium, high, and very high risks and adding items to arraylist
-                    if (impact_factor > 4) {
-                        String threat_level = "Very High";
-                        impact_list.add(id);  
-                        impact_list.add(value); 
-                        impact_list.add(category);  
-                        impact_list.add(type);  
-                        impact_list.add(threat_level);
-                    }
-                    if (impact_factor == 4) {
-                        String threat_level = "High";
-                        impact_list.add(id); 
-                        impact_list.add(value); 
-                        impact_list.add(category);  
-                        impact_list.add(type);  
-                        impact_list.add(threat_level);
-                    }
+                    // Categorize based on user-defined thresholds
+                    String riskLevel = categorizeRiskLevel(impact_factor, thresholds);
 
-                    if (impact_factor > 1 && impact_factor < 4) {
-                        String threat_level = "Medium";
-                        impact_list.add(id); 
-                        impact_list.add(value); 
-                        impact_list.add(category);  
-                        impact_list.add(type);  
-                        impact_list.add(threat_level);
-                    } else {
-                        String threat_level = "Low";
-                        impact_list.add(id); 
-                        impact_list.add(value); 
-                        impact_list.add(category);  
-                        impact_list.add(type);    
-                        impact_list.add(threat_level);
-                    }
+                    // Add categorized data to the list
+                    impact_list.add(id);  
+                    impact_list.add(value); 
+                    impact_list.add(category);  
+                    impact_list.add(type);  
+                    impact_list.add(riskLevel); // Add the determined risk level
                 }
                 
                 // Optionally, print or log the result for debugging
@@ -90,6 +68,20 @@ public class ImpactFactor {
             System.out.println("Unexpected error: " + ex.getMessage());
             ex.printStackTrace();
         }
+    }
+
+    // Method to categorize the impact_factor based on user-defined thresholds
+    private String categorizeRiskLevel(int impactFactor, Map<String, Integer> thresholds) {
+        for (Map.Entry<String, Integer> entry : thresholds.entrySet()) {
+            String riskLevel = entry.getKey();
+            int threshold = entry.getValue();
+
+            // Compare impact factor with thresholds to categorize
+            if (impactFactor >= threshold) {
+                return riskLevel;
+            }
+        }
+        return "Unknown"; // Default category if no threshold is matched
     }
 
     // Getter and Setter methods
