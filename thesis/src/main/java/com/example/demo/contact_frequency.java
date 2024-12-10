@@ -12,22 +12,26 @@ import java.util.HashMap;
 
 public class ContactFrequency {
 
-    // Encapsulates List and Content, Use getters to retrieve
+    // List to store categorized data
     public ArrayList<String> TEF_Value_list = new ArrayList<String>();
 
-    // Method to retrieve TEF data and categorize counts based on user-defined thresholds
-    public void GetTEFValueData(ThresholdConfig config) {
+    // Method to retrieve TEF data and categorize based on user-defined thresholds
+    public void GetTEFValueData(Map<String, Integer> thresholds, String filterValue) {
 
-        // SQL query to retrieve data from the database
+        // Secure parameterized SQL query to prevent SQL injection
         String sql = """
             SELECT id, value, COUNT(value) AS CNT
             FROM fair_data
             WHERE value IS NOT NULL
+            AND value LIKE ?  
             GROUP BY id, value
         """;
 
         try (Connection conn = Util.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // Set the parameter for the filter (user input)
+            stmt.setString(1, "%" + filterValue + "%");  // Safe handling of user input using LIKE
 
             try (ResultSet rs = stmt.executeQuery()) {
 
@@ -36,10 +40,10 @@ public class ContactFrequency {
                     String value = rs.getString("value");
                     int CNT = rs.getInt("CNT");
 
-                    // Loop through the thresholds defined in config to categorize the CNT value
-                    String riskLevel = categorizeRiskLevel(CNT, config);
+                    // Dynamically categorize based on user-defined thresholds
+                    String riskLevel = categorizeRiskLevel(CNT, thresholds);
 
-                    // Add the risk level and the corresponding value to the list
+                    // Add categorized data to the list
                     TEF_Value_list.add(riskLevel);
                     TEF_Value_list.add(value);
                 }
@@ -55,20 +59,19 @@ public class ContactFrequency {
         }
     }
 
-    // Method to categorize CNT value dynamically based on thresholds
-    private String categorizeRiskLevel(int CNT, ThresholdConfig config) {
-        // Loop through each risk level defined in the thresholds config
-        for (Map.Entry<String, Integer> entry : config.getThresholds().entrySet()) {
+    // Method to categorize the CNT based on thresholds provided by the user
+    private String categorizeRiskLevel(int CNT, Map<String, Integer> thresholds) {
+        for (Map.Entry<String, Integer> entry : thresholds.entrySet()) {
             String riskLevel = entry.getKey();
             int threshold = entry.getValue();
 
-            // Categorize the CNT based on the thresholds
+            // If CNT is less than or equal to a threshold, return the corresponding risk level
             if (CNT <= threshold) {
                 return riskLevel;
             }
         }
 
-        // Return a default category if no thresholds match
+        // If no thresholds match, return a default category
         return "Unknown";
     }
 
