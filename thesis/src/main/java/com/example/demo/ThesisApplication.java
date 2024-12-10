@@ -18,71 +18,51 @@ import java.io.IOException;
 
 public class ThesisApplication extends Util  {
 
-	public static void main(String[] args) throws FileNotFoundException {
-	
-	
-	// Use one of these code sections at a time to test different functions //
+    public static void main(String[] args) throws FileNotFoundException {
 
-	// #1 //
-	// This modifies the BBN model. When using the BBN model modification you have to comment out the Export to file part of this application and other objects.
-			//ModifyBBN testobj = new ModifyBBN();
-			//testobj.RunThis();
-		
-	// #2 //
-// Retrieving and instansiating data to object from impact_factor class to get impact_factor data
-	 		impact_factor obj = new impact_factor();
- 			obj.impact();
-	
-	// #3 //
-// The methods used below are used to retrieve TEF data.
-// Retrieving and instansiating data to object from TEF class
-	//	Probability_of_action obj2 = new Probability_of_action();
-	//	obj2.GetTEFData();
+        // Use Scanner to get user input for thresholds
+        Scanner scanner = new Scanner(System.in);
 
-	// #4 //
-// Retrieving the Value count, which gives us the number of matching threat values from DB.
+        // Prompt the user for threshold values
+        System.out.print("Enter the High threshold: ");
+        int highThreshold = scanner.nextInt();
 
-		//contact_frequency obj3 = new contact_frequency();
-		//obj3.GetTEFValueData();
+        System.out.print("Enter the Medium threshold: ");
+        int mediumThreshold = scanner.nextInt();
 
+        System.out.print("Enter the Low threshold: ");
+        int lowThreshold = scanner.nextInt();
 
-// Using XStream to serialize the objects to XML //
-XStream xstream = new XStream();
-// Export Impact_Factor to XML //
-	//xstream.alias("Category", impact_factor.class);
-	//xstream.alias("Type", impact_factor.class);
-	///xstream.alias("Impact_Rating", impact_factor.class);
+        // Create an instance of the ContactFrequency class or similar to use the thresholds
+        ContactFrequency contactFrequencyObj = new ContactFrequency();
+        contactFrequencyObj.setThresholds(highThreshold, mediumThreshold, lowThreshold);
 
-// Pick depending on the object you picked before //
-	//String xml = xstream.toXML(obj2.TEF_list);
-	String xml = xstream.toXML(obj.getImpact_list());
-	//String xml = xstream.toXML(obj3.getTEF_Value_list());
+        // Now, retrieve the data using the user-defined thresholds
+        contactFrequencyObj.GetTEFValueData();
 
+        // Using XStream to serialize the objects to XML
+        XStream xstream = new XStream();
 
-// Export to file
-try {
-FileWriter xmlfile = new FileWriter("Value.xml");
-xmlfile.write(xml);
-xmlfile.close();
+        // Export to XML
+        String xml = xstream.toXML(contactFrequencyObj.getTEF_Value_list());
 
-}
-catch (IOException e) { 
-System.out.println("Error occured, please review.");
-e.printStackTrace();
-}
+        // Write the XML to a file
+        try {
+            FileWriter xmlfile = new FileWriter("Value.xml");
+            xmlfile.write(xml);
+            xmlfile.close();
+            System.out.println("Data has been exported to Value.xml.");
+        } catch (IOException e) {
+            System.out.println("Error occurred while exporting data.");
+            e.printStackTrace();
+        }
 
+        // To test output, you can print the XML content
+        // System.out.println(xml);
 
-// To test output
-//System.out.println(xml);
-//
-
-		
-
-
-}
-}
-
-
+        // Close the scanner
+        scanner.close();
+    }
 
 
 
