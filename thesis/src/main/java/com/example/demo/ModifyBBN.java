@@ -22,6 +22,7 @@ public class ModifyBBN {
         String sql = """
             SELECT id, category, type, threat_level_id, category_type_counter, percentage 
             FROM fair_data 
+            WHERE category = ? AND type = ? 
             GROUP BY id, category, type, threat_level_id, category_type_counter, percentage 
             LIMIT 1
             """;
