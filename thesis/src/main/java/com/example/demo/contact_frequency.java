@@ -6,17 +6,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import com.example.demo.MYSQL.Util;
+import java.util.Map;
+import java.util.HashMap;
+
 
 public class ContactFrequency {
 
-    // Allow users to define risk levels //
-    
-    // Encapsulates List and Content, Use getters to retrieve //
+    // Encapsulates List and Content, Use getters to retrieve
     public ArrayList<String> TEF_Value_list = new ArrayList<String>();
 
-    public void GetTEFValueData() {
+    // Method to retrieve TEF data and categorize counts based on user-defined thresholds
+    public void GetTEFValueData(ThresholdConfig config) {
 
-      // Filter if user input is used, currently it is not 
+        // SQL query to retrieve data from the database
         String sql = """
             SELECT id, value, COUNT(value) AS CNT
             FROM fair_data
@@ -34,30 +36,40 @@ public class ContactFrequency {
                     String value = rs.getString("value");
                     int CNT = rs.getInt("CNT");
 
-                    // Categorize CNT values into High, Medium, and Low risk levels
-                    if (CNT > 100) {
-                        String CNT_String = "High";
-                        TEF_Value_list.add(CNT_String);
-                        TEF_Value_list.add(value);
-                    }
-                    if (CNT > 50 && CNT <= 100) {
-                        String CNT_String = "Medium";
-                        TEF_Value_list.add(CNT_String);
-                        TEF_Value_list.add(value);
-                    }
-                    // Optionally print or log the result for debugging
-                    // System.out.println("Value: " + value + " Count: " + CNT);
+                    // Loop through the thresholds defined in config to categorize the CNT value
+                    String riskLevel = categorizeRiskLevel(CNT, config);
+
+                    // Add the risk level and the corresponding value to the list
+                    TEF_Value_list.add(riskLevel);
+                    TEF_Value_list.add(value);
                 }
 
             }
 
         } catch (SQLException ex) {
             System.out.println("SQL Exception: " + ex.getMessage());
-            ex.printStackTrace();  // Better trace for debugging
+            ex.printStackTrace();  // For better debugging
         } catch (Exception ex) {
             System.out.println("Unexpected error: " + ex.getMessage());
             ex.printStackTrace();
         }
+    }
+
+    // Method to categorize CNT value dynamically based on thresholds
+    private String categorizeRiskLevel(int CNT, ThresholdConfig config) {
+        // Loop through each risk level defined in the thresholds config
+        for (Map.Entry<String, Integer> entry : config.getThresholds().entrySet()) {
+            String riskLevel = entry.getKey();
+            int threshold = entry.getValue();
+
+            // Categorize the CNT based on the thresholds
+            if (CNT <= threshold) {
+                return riskLevel;
+            }
+        }
+
+        // Return a default category if no thresholds match
+        return "Unknown";
     }
 
     // Getter for TEF_Value_list
