@@ -6,16 +6,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import com.example.demo.MYSQL.Util;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Probability_of_action {
 
-    // retrieves the occurrence of Category and Type matches which is used partly to calculate probability //
-    
     // Encapsulates List and Content, Use getters to retrieve //
     private ArrayList<String> TEF_list = new ArrayList<String>();
-    
-    public void GetTEFData(String filterCategory, String filterType) {
-        
+
+    // Enum for TEF percentage categories
+    public enum TEFCategory {
+        LOW, MEDIUM, HIGH
+    }
+
+    // Method to retrieve TEF data with user-configurable thresholds
+    public void GetTEFData(String filterCategory, String filterType, ThresholdConfig config) {
+
         // Parameterized SQL Query
         String sql = """
             SELECT DISTINCT value, category, type, COUNT(category) AS Category_Type_Counter, value_cnt 
@@ -27,7 +35,7 @@ public class Probability_of_action {
 
         try (Connection conn = Util.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-             
+
             // Set parameters for category and type
             stmt.setString(1, filterCategory);  // Set category parameter
             stmt.setString(2, filterType);      // Set type parameter
@@ -41,36 +49,22 @@ public class Probability_of_action {
                     double Category_Type_Counter = rs.getDouble("Category_Type_Counter");
                     double Total_Value_Fixed = rs.getDouble("value_cnt");
 
-                    // Use the getters values in TEF_Value_Data class for these or modify manually to define low, medium, high
-                    // OR allow users to modify the values 
-                    double low = 70.8 / Total_Value_Fixed;
-                    double medium = 177 / Total_Value_Fixed;
-                    double high = 354 / Total_Value_Fixed;
-                    double veryhigh = 708 / Total_Value_Fixed;
-
-                    // Calculating Percentage 
+                    // Calculate percentage
                     double TEF_Percentage_Pre = Category_Type_Counter / Total_Value_Fixed;
                     double TEF_Percentage = TEF_Percentage_Pre * 100;
 
-                    // Categorize the results based on percentage thresholds
-                    if (TEF_Percentage <= low) {
-                        String TEF_Percentage_output = "Low";
-                        TEF_list.add(Type);
-                        TEF_list.add(Category);
-                        TEF_list.add(TEF_Percentage_output);
-                    } else if (TEF_Percentage > low && TEF_Percentage >= medium) {
-                        String TEF_Percentage_output = "Medium";
-                        TEF_list.add(Type);
-                        TEF_list.add(Category);
-                        TEF_list.add(TEF_Percentage_output);
-                    } else if (TEF_Percentage > medium) {
-                        String TEF_Percentage_output = "High";
-                        TEF_list.add(Type);
-                        TEF_list.add(Category);
-                        TEF_list.add(TEF_Percentage_output);
-                    }
+                    // Get thresholds from user config
+                    double low = config.getLowThreshold();
+                    double medium = config.getMediumThreshold();
+                    double high = config.getHighThreshold();
 
-                    // Debugging Output (optional)
+                    // Determine category using helper method
+                    TEFCategory category = getTEFCategory(TEF_Percentage, low, medium, high);
+
+                    // Add result to the list
+                    addToTEFList(Type, Category, category);
+
+                    // Optional Debugging Output
                     // System.out.println("Type:" + Type);
                     // System.out.println("Category:" + Category);
                     // System.out.println("Category_counter:" + Category_Type_Counter);
@@ -89,6 +83,32 @@ public class Probability_of_action {
             System.err.println("Unexpected error: " + ex.getMessage());
             ex.printStackTrace();
         }
+    }
+
+    // Helper method to determine the TEF category based on percentage
+    private TEFCategory getTEFCategory(double percentage, double low, double medium, double high) {
+        // Map to store thresholds and their corresponding categories
+        Map<Double, TEFCategory> thresholds = new HashMap<>();
+        thresholds.put(low, TEFCategory.LOW);
+        thresholds.put(medium, TEFCategory.MEDIUM);
+        thresholds.put(high, TEFCategory.HIGH);
+
+        // Loop through thresholds to find the correct category
+        for (Map.Entry<Double, TEFCategory> entry : thresholds.entrySet()) {
+            if (percentage <= entry.getKey()) {
+                return entry.getValue();
+            }
+        }
+
+        // Default to HIGH if no category matched
+        return TEFCategory.HIGH;
+    }
+
+    // Helper method to add data to TEF_list
+    private void addToTEFList(String type, String category, TEFCategory categoryLevel) {
+        TEF_list.add(type);
+        TEF_list.add(category);
+        TEF_list.add(categoryLevel.name());
     }
 
     // Getter for TEF_list
